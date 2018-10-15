@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int mcd(int a,int b);
+
+int main(int argc, char *argv[]) {
+	int a,b;
+	scanf("%d",&a);
+	scanf("%d",&b);
+	printf("%d",mcd(a,b));
+}
+
+int mcd(int a,int b){
+	if(b==0){
+		return a;
+	}else{
+		return mcd(b,a%b);
+	}
+	
+}
