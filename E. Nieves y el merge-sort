@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define Nodo struct nodo
+#define List struct list
+
+Nodo{
+	int dato;
+	Nodo*siguiente;
+};
+
+List{
+	Nodo*inicio;
+	Nodo*final;
+};
+
+void acomodar(Nodo*inicioc,Nodo*iniciop);
+void insertarCola(List*lista,int x);
+void insertarPila(List*lista,int x);
+void ordenar(List*lista);
+void visualizarVista(List nlista);
+
+int main(){
+	List Cola,Pila;
+	Pila.inicio=Pila.final=NULL;
+	Cola.inicio=Cola.final=NULL;
+	int x,i,n;
+	scanf("%i",&n);
+	for(i=1;i<=n;i++){
+		scanf("%i",&x);
+		if(i<=(n/2)){
+			insertarPila(&Pila,x);
+		}else{
+			insertarCola(&Cola,x);
+		}
+	}
+	acomodar(Cola.inicio,Pila.inicio);
+}
+
+void visualizarVista(List nlista){
+	if(nlista.inicio!=NULL){
+		Nodo*aux=nlista.inicio;
+		while(aux!=NULL){
+			printf("%i ",aux->dato);
+			aux=aux->siguiente;
+		}
+    }
+}
+
+void ordenar(List*lista){
+	if(lista->inicio!=NULL){
+		Nodo*piv=lista->inicio;
+		Nodo*apiv=NULL;
+		Nodo*aux=lista->inicio->siguiente;
+		Nodo*max=lista->inicio;
+		Nodo*ant=lista->inicio;
+		while(piv!=NULL){
+			while(aux!=NULL){
+				if(aux->dato<max->dato){
+					ant->siguiente=aux->siguiente;
+					aux->siguiente=piv;
+					if(piv==lista->inicio){
+						lista->inicio=aux;
+					}else{
+						apiv->siguiente=aux;
+					}
+					max=aux;
+					piv=aux;
+					aux=ant->siguiente;
+				}else{
+					aux=aux->siguiente;
+					ant=ant->siguiente;
+				}
+			}
+			apiv=piv;
+			piv=piv->siguiente;
+			max=max->siguiente;
+			if(piv==NULL){
+				aux=NULL;
+			}else{
+				aux=piv->siguiente;
+			}
+			ant=piv;
+		}
+	}
+}
+
+void acomodar(Nodo*inicioc,Nodo*iniciop){
+	if(inicioc!=NULL && iniciop!=NULL){
+		if(inicioc->dato<iniciop->dato){
+		   printf("%i ",inicioc->dato);
+		   acomodar(inicioc->siguiente,iniciop);
+	    }else{
+		   printf("%i ",iniciop->dato);
+		   acomodar(inicioc,iniciop->siguiente);
+	    }
+	}else if(inicioc==NULL){
+		while(iniciop!=NULL){
+			printf("%i ",iniciop->dato);
+			iniciop=iniciop->siguiente;
+		}
+	}else{
+		printf("%i ",inicioc->dato);
+		inicioc=inicioc->siguiente;
+	}
+}
+
+void insertarCola(List *lista,int x){
+	Nodo*nuevo=(Nodo*)malloc(sizeof(Nodo));
+	nuevo->dato=x;
+	nuevo->siguiente=NULL;
+	if((lista->inicio==NULL) && (lista->final==NULL)){
+		lista->inicio=nuevo;
+		lista->final=nuevo;
+	}else{
+		lista->final->siguiente=nuevo;
+		lista->final=nuevo;
+	}
+}
+
+void insertarPila(List *lista,int x){
+	Nodo*nuevo=(Nodo*)malloc(sizeof(Nodo));
+	nuevo->dato=x;
+	nuevo->siguiente=NULL;
+	if((lista->inicio==NULL) && (lista->final==NULL)){
+		lista->inicio=nuevo;
+		lista->final=nuevo;
+	}else{
+		nuevo->siguiente=lista->inicio;
+		lista->inicio=nuevo;
+	}
+}
