@@ -1,0 +1,52 @@
+#include <stdio.h>
+#define Nodo struct nodo
+
+Nodo{
+	char dato;
+	int visit;
+};
+
+void busqueda(int x,int y,int esc);
+Nodo matriz[50][50];
+int N,M,R,C,escalera;
+
+int main(){
+	int i,j;
+	scanf("%i %i",&N,&M);
+	scanf("%i %i",&R,&C);
+	for(i=0;i<N;i++){
+		for(j=0;j<M;j++){
+			do{
+		    	scanf("%c",&matriz[i][j].dato);	
+			}while(matriz[i][j].dato=='\n');
+			matriz[i][j].visit=0;
+		}
+	}
+	for(i=0;i<N;i++){
+		escalera++;
+		busqueda(N-1,0,escalera);
+		if (matriz[R][C].visit==escalera){
+			printf("%i",escalera);
+			return 1;
+		}
+	}
+}
+
+void busqueda(int x, int y, int escalera){
+	int i;
+    if(x<0 || y<0 || x>=N || y>=M){
+    	return;
+	}else if(matriz[x][y].visit==escalera){
+	  return;	
+	}else if(matriz[x][y].dato=='.'){
+	return;
+	}else{
+    matriz[x][y].visit=escalera;
+    busqueda(x, y+1, escalera);
+    busqueda(x, y-1, escalera);
+    for(i=1; i<=escalera; i++){
+        busqueda(x+i,y,escalera);
+        busqueda(x-i,y,escalera);    
+    }
+}
+}
