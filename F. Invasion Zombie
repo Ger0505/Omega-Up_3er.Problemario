@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int dias_infeccion(int**ciudad,int N,int C,int dias);
+void infectar(int**ciudad,int N);
+void inicializar(int**ciudad,int N,int X, int Y);
+void visualizar(int **matriz,int N);
+
+int main(){
+	int N,X,Y,C,i,**ciudad,dias=0;
+	do{
+		scanf("%i",&N);
+	}while(N<1 || N>pow(10,9));
+	do{
+		scanf("%i %i",&X,&Y);
+	}while(X<1 || X>N || Y<1 || Y>N);
+	do{
+		scanf("%i",&C);
+	}while(C<1 || C>(N*N));
+	
+	ciudad=(int**)malloc(N*sizeof(int*));
+	for(i=0;i<N;i++){
+		ciudad[i]=(int*)malloc(N*sizeof(int));
+	}
+	inicializar(ciudad,N,X-1,Y-1);
+	printf("%i",dias_infeccion(ciudad,N,C,dias));
+	return 0;
+}
+
+int dias_infeccion(int**ciudad,int N,int C,int dias){    
+	int cont=0,i,j;
+	for(i=0;i<N;i++){
+		for(j=0;j<N;j++){
+			if(ciudad[i][j]==1){
+				cont++;
+			}
+		}
+	}
+	if(cont>=C){
+		return dias;
+	}else{
+		infectar(ciudad,N);
+		for(i=0;i<N;i++){
+			for(j=0;j<N;j++){
+				if(ciudad[i][j]==5){
+					ciudad[i][j]=1;
+				}
+			}
+		}
+		return dias_infeccion(ciudad,N,C,dias+1);
+	}
+	
+}
+
+void infectar(int**ciudad,int N){
+	int i,j,k,l;
+	for(i=0;i<N;i++){
+		for(j=0;j<N;j++){
+			if(ciudad[i][j]==1){
+				for(k=(i-1);k<=(i+1);k++){
+					for(l=(j-1);l<=(j+1);l++){
+						if((k<N) && (l<N) && (k>=0) && (l>=0) && (k==i || l==j)){
+							if(ciudad[k][l]!=1){
+								ciudad[k][l]=5;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void inicializar(int**ciudad,int N,int X, int Y){
+	int i,j;
+	for(i=0;i<N;i++){
+		for(j=0;j<N;j++){
+			ciudad[i][j]=0;
+		}
+	}
+	ciudad[X][Y]=1;
+}
