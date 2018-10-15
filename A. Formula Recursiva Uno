@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int f(int n){
+	if(n<=5){
+		return 1;
+	}else{
+		return f(n-2)*5;
+	}
+}
+
+int main(){
+	int n;
+	do{
+		scanf("%i",&n);
+	}while(n<1 || n>60);
+	printf("%i",f(n));
+}
